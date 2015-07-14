@@ -4,6 +4,7 @@ __author__ = 'kzhang'
 
 import subprocess
 from picamera import PiCamera
+from datetime import datetime
 
 
 # Run a viewer with an appropriate command line. Uncomment the mplayer
@@ -17,4 +18,5 @@ with PiCamera() as camera:
 
     camera.start_recording(player.stdin, format='h264', quality=23)
     while True:
+        camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         camera.wait_recording(1)
