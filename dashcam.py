@@ -2,21 +2,40 @@
 
 __author__ = 'kzhang'
 
-import subprocess
-from picamera import PiCamera
+import picamera
 from datetime import datetime
 
 
-# Run a viewer with an appropriate command line. Uncomment the mplayer
-# version if you would prefer to use mplayer instead of VLC
-cmdline = ['cvlc', 'stream:///dev/stdin', '--sout', '#standard{access=http,mux=ts,dst=:8554}', ':demux=h264']
-player = subprocess.Popen(cmdline, stdin=subprocess.PIPE)
+def get_output_filename():
+    return datetime.today().strftime('%Y-%m-%d_%H_%M_%S.h264')
 
-with PiCamera() as camera:
-    camera.resolution = (1280, 720)
-    camera.framerate = 30
 
-    camera.start_recording(player.stdin, format='h264', quality=23)
-    while True:
-        camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        camera.wait_recording(1)
+def get_annotate():
+    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+
+interval = 5 * 60   # 5 minutes
+resolution = (1920, 1080)    # Full HD
+keep_going = True
+
+with picamera.PiCamera() as camera:
+    camera.resolution = resolution
+    filename = get_output_filename()
+
+    print 'Start recording', filename
+    camera.start_recording(filename, format='h264')
+    camera.annotate_text = get_annotate()
+    camera.wait_recording(interval)
+
+    # main loop
+    while keep_going:
+        filename = get_output_filename()
+        print 'Start recording', filename
+        camera.split_recording(filename)
+
+        camera.annotate_text = get_annotate()
+        camera.wait_recording(interval)
+
+    print 'Stop.'
+    camera.stop_recording()
+
