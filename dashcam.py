@@ -7,14 +7,14 @@ from datetime import datetime
 
 
 def get_output_filename():
-    return datetime.today().strftime('%Y-%m-%d_%H_%M_%S.h264')
+    return datetime.now().strftime('%Y-%m-%d_%H_%M_%S.h264')
 
 
 def get_annotate():
     return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 
-interval = 5 * 60   # 5 minutes
+interval = 3 * 60   # how many minutes every file
 resolution = (1920, 1080)    # Full HD
 keep_going = True
 
