@@ -4,41 +4,61 @@ __author__ = 'kzhang'
 
 import shutil
 import os
+from time import sleep
 
-path = '.'  # TODO: get path from config
+
+video_storage_path = '.'  # TODO: get path from config
 disk_usage_threshold = .9
 
 
-def delete_oldest_file(path):
-    # Deletes oldest file in a specified directory
-    current = os.getcwd()
-    os.chdir(path)
-    files = sorted(os.listdir(path), key=os.path.getmtime)
-    oldest = files[0]
-    os.chdir(current)
-    filename, extension = os.path.splitext(oldest)
+class VideoStorage:
+    def __init__(self, path):
+        self.path = path
+        self.video_files = []
 
-    print(filename, extension)
+    def get_video_files(self):
+        current = os.getcwd()
+        os.chdir(self.path)
+        files = [f for f in os.listdir(self.path) if f.endswith('.h264') and os.path.isfile(os.path.join(self.path, f))]
+        os.chdir(current)
+        sorted_list = sorted(files, key=os.path.getmtime)
+        return sorted_list
 
-    base = os.path.join(path, filename)
-    # if os.path.exists(base + '.jpg'):
-    #     os.remove(base + '.jpg')
-    #
-    # if os.path.exists(base + '.h264'):
-    #     os.remove(base + '.h264')
-    #
-    # if os.path.exists(base + '.mp4'):
-    #     os.remove(base + '.mp4')
+    def delete_oldest_file(self):
+        if not self.video_files:
+            self.video_files = self.get_video_files()
+        if not self.video_files:
+            print('Empty file list. delete nothing.')
+            return
 
-    print ("  Deleted", base)
+        oldest = self.video_files.pop(0)
+        filename, extension = os.path.splitext(oldest)
 
+        base = os.path.join(self.path, filename)
+        if os.path.exists(base + '.jpg'):
+            os.remove(base + '.jpg')
+
+        if os.path.exists(base + '.h264'):
+            os.remove(base + '.h264')
+
+        if os.path.exists(base + '.mp4'):
+            os.remove(base + '.mp4')
+
+        print ("  Deleted", filename)
+
+
+video_storage = VideoStorage(video_storage_path)
 
 while True:
-    status = shutil.disk_usage(path)
-    disk_total = status[0]
-    disk_usage = status[1]
-    disk_free = status[2]
-    if disk_free / disk_total >= disk_usage_threshold:
-        break
-    # remove oldest file
-    delete_oldest_file(path)
+    for count in range(1, 5):
+        status = shutil.disk_usage(video_storage_path)
+        disk_total = status[0]
+        disk_used = status[1]
+        disk_free = status[2]
+        if disk_used / disk_total < disk_usage_threshold:
+            print('Disk has enough spaces.')
+            print('Used: {:d} Total:{:d} Usage:{:.2f}'.format(disk_used, disk_total, disk_used / disk_total * 100))
+            break
+        # remove oldest file
+        video_storage.delete_oldest_file()
+    sleep(10)
