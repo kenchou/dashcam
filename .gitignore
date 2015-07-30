@@ -58,3 +58,6 @@ target/
 
 # IDE: PyCharm
 .idea/
+
+# video files
+*.h264
