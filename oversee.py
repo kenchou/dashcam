@@ -61,4 +61,4 @@ while True:
             break
         # remove oldest file
         video_storage.delete_oldest_file()
-    sleep(10)
+    sleep(30)
