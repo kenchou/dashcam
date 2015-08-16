@@ -20,6 +20,7 @@ def update_annotate(camera, interval):
         camera.wait_recording(1)
 
 
+storage_path = '~/Videos'
 interval = 3 * 60   # how many minutes every file
 resolution = (1920, 1080)    # Full HD
 #resolution = (1296, 972)

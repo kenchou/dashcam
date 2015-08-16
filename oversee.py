@@ -8,7 +8,7 @@ from time import sleep
 
 
 video_storage_path = '.'  # TODO: get path from config
-disk_usage_threshold = .9
+disk_usage_threshold = .85
 
 
 class VideoStorage:
@@ -55,10 +55,8 @@ while True:
         disk_total = status[0]
         disk_used = status[1]
         disk_free = status[2]
-        if disk_used / disk_total < disk_usage_threshold:
-            print('Disk has enough spaces.')
-            print('Used: {:d} Total:{:d} Usage:{:.2f}'.format(disk_used, disk_total, disk_used / disk_total * 100))
-            break
-        # remove oldest file
-        video_storage.delete_oldest_file()
+        print('Disk usage:{:.2f}%'.format(disk_used / disk_total * 100))
+        if disk_used / disk_total >= disk_usage_threshold:
+            # remove oldest file
+            video_storage.delete_oldest_file()
     sleep(30)
