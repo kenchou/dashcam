@@ -7,7 +7,7 @@ import os
 from time import sleep
 
 
-video_storage_path = '.'  # TODO: get path from config
+video_storage_path = '/home/pi/Videos'  # TODO: get path from config
 disk_usage_threshold = .85
 
 
