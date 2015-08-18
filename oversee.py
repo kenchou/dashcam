@@ -55,8 +55,10 @@ while True:
         disk_total = status[0]
         disk_used = status[1]
         disk_free = status[2]
-        print('Disk usage:{:.2f}%'.format(disk_used / disk_total * 100))
         if disk_used / disk_total >= disk_usage_threshold:
             # remove oldest file
+            print('Disk usage:{:.2f}%'.format(disk_used / disk_total * 100))
             video_storage.delete_oldest_file()
+        else:
+            break
     sleep(30)

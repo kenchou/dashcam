@@ -11,13 +11,13 @@ def get_output_filename():
     return datetime.now().strftime('%Y-%m-%dT%H_%M_%S.h264')
 
 
-def get_annotate():
-    return '{} {}'.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), '1920x1080@30fps')
+def get_annotate(camera):
+    return '{} {}@{}'.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 'x'.join([str(v) for v in camera.resolution]), camera.framerate)
 
 
 def update_annotate(camera, interval):
     for i in range(0, interval):
-        camera.annotate_text = get_annotate()
+        camera.annotate_text = get_annotate(camera)
         camera.wait_recording(1)
 
 
@@ -58,6 +58,7 @@ with picamera.PiCamera() as camera:
         print e
     finally:
         print 'Stop.'
+        camera.stop_preview()
         camera.stop_recording()
         camera.close()
 
