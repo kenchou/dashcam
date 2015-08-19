@@ -18,8 +18,10 @@ class VideoStorage:
 
     def get_video_files(self):
         current = os.getcwd()
+        #print('Current Path:', current)
         os.chdir(self.path)
-        files = [f for f in os.listdir(self.path) if f.endswith('.h264') and os.path.isfile(os.path.join(self.path, f))]
+        #print('Now chdir:', os.getcwd())
+        files = [os.path.join(self.path, f) for f in os.listdir(self.path) if f.endswith('.h264') and os.path.isfile(os.path.join(self.path, f))]
         os.chdir(current)
         sorted_list = sorted(files, key=os.path.getmtime)
         return sorted_list
@@ -57,8 +59,9 @@ while True:
         disk_free = status[2]
         if disk_used / disk_total >= disk_usage_threshold:
             # remove oldest file
-            print('Disk usage:{:.2f}%'.format(disk_used / disk_total * 100))
+            print('\nDisk usage:{:.2f}%'.format(disk_used / disk_total * 100))
             video_storage.delete_oldest_file()
         else:
+            print('.', end='')
+            sleep(30)
             break
-    sleep(30)
