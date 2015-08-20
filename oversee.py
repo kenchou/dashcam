@@ -62,6 +62,6 @@ while True:
             print('\nDisk usage:{:.2f}%'.format(disk_used / disk_total * 100))
             video_storage.delete_oldest_file()
         else:
-            print('.', end='')
+            print('.', end='', flush=True)
             sleep(30)
             break
