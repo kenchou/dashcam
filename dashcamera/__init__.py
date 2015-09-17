@@ -47,7 +47,7 @@ class PiCameraWorker(multiprocessing.Process):
                 v = self.config['params'][k]
                 if k == 'resolution':
                     v = tuple(v.split('x'))
-                camera.setattr(k, v)
+                setattr(camera, k, v)
 
             filename = get_output_filename()
             output_file = os.path.join(storage_path, filename)
