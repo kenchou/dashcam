@@ -35,9 +35,9 @@ class PiCameraWorker(multiprocessing.Process):
         if hasattr(os, 'getppid'):  # only available on Unix
             print('    │          ppid:', os.getppid())
 
-        storage_path = self.options['storage_path']
-        interval = self.options['length']
-        encoder = self.options['encoder']
+        storage_path = self.options['storage']['path']
+        interval = self.options['video']['length']
+        encoder = self.options['video']['encoder']
         import picamera
 
         keep_going = True
@@ -128,10 +128,11 @@ class Controller:
         p = Cleaner(config=self.config['storage'])
         self.jobs.append(p)
 
+        options = {'storage': self.config['storage'], 'video': self.config['video']}
         camera_enabled = self.config['camera']['enabled']
         cameras = [c for c in self.config['camera']['device'] if c['name'] in camera_enabled]
         for device in cameras:
-            p = PiCameraWorker(name=device['name'], config=device)
+            p = PiCameraWorker(name=device['name'], config=device, options=options)
             self.jobs.append(p)
 
         for p in self.jobs:
