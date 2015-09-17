@@ -1,0 +1,18 @@
+camera:
+  enabled:
+      - Front Camera
+  device:
+      -
+          name: Front Camera
+          driver: PiCamera
+      -
+          name: Rear Camera
+          driver: PiCamera
+storage:
+    path: ~/Videos
+    max_disk_usage: .85
+video:
+    length: 180
+    encoder: h264
+    format: mp4
+    filename_pattern: YmdTHis
