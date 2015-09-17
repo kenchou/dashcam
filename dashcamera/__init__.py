@@ -87,7 +87,7 @@ class Cleaner(multiprocessing.Process):
         print('    ├── In %s(%s)' % (self.name, self.pid))
         if hasattr(os, 'getppid'):  # only available on Unix
             print('    │          ppid:', os.getppid())
-        storage_path = os.path.expanduser(self.config['path'])
+        storage_path = self.config['path']
         video_storage = VideoStorage(storage_path)
 
         while True:

@@ -13,6 +13,7 @@ if __name__ == "__main__":
     with open(config_file, 'r') as stream:
         config = yaml.load(stream)
         # print(config)
+        config['storage']['path'] = os.path.expanduser(config['storage']['path'])
 
     controller = dashcamera.Controller(config=config)
     controller.run()
