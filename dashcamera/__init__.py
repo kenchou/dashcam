@@ -24,19 +24,58 @@ def update_annotate(camera, interval):
 
 
 class PiCameraWorker(multiprocessing.Process):
-    def __init__(self, name=None, args=()):
-        super().__init__(name=name, args=args)
-        self.args = args
+    def __init__(self, name=None, config=None, options=None):
+        super().__init__(name=name)
+        self.config = config
+        self.options = options
 
     def run(self):
         # print(self.args)
         print('    ├── In %s(%s)' % (self.name, self.pid))
         if hasattr(os, 'getppid'):  # only available on Unix
             print('    │          ppid:', os.getppid())
-        while True:
-            print('.', end='')
-            sys.stdout.flush()
-            sleep(3)
+
+        storage_path = self.options['storage_path']
+        interval = self.options['length']
+        encoder = self.options['encoder']
+        import picamera
+
+        keep_going = True
+        camera = picamera.PiCamera()
+        try:
+            for k in self.config['params']:
+                v = self.config['params'][k]
+                if k == 'resolution':
+                    v = tuple(v.split('x'))
+                camera.setattr(k, v)
+
+            filename = get_output_filename()
+            output_file = os.path.join(storage_path, filename)
+
+            print('Start recording', filename)
+            camera.start_preview()
+            camera.start_recording(output_file, format=encoder)
+            # camera.annotate_text = get_annotate()
+            # camera.wait_recording(interval)
+            update_annotate(camera, interval)
+
+            # main loop
+            while keep_going:
+                filename = get_output_filename()
+                output_file = os.path.join(storage_path, filename)
+
+                print('Start recording', filename)
+                camera.split_recording(output_file)
+                update_annotate(camera, interval)
+                # camera.annotate_text = get_annotate()
+                # camera.wait_recording(interval)
+        except Exception as e:
+            print(e)
+        finally:
+            print('Stop.')
+            camera.stop_preview()
+            camera.stop_recording()
+            camera.close()
 
 
 class Cleaner(multiprocessing.Process):
@@ -92,7 +131,7 @@ class Controller:
         camera_enabled = self.config['camera']['enabled']
         cameras = [c for c in self.config['camera']['device'] if c['name'] in camera_enabled]
         for device in cameras:
-            p = PiCameraWorker(name=device['name'], args=(device,))
+            p = PiCameraWorker(name=device['name'], config=device)
             self.jobs.append(p)
 
         for p in self.jobs:
