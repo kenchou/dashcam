@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-__author__ = 'kzhang'
+__author__ = 'Ken Chou <kenchou77@gmail.com>'
 
 import shutil
 import os
@@ -18,9 +18,9 @@ class VideoStorage:
 
     def get_video_files(self):
         current = os.getcwd()
-        #print('Current Path:', current)
+        # print('Current Path:', current)
         os.chdir(self.path)
-        #print('Now chdir:', os.getcwd())
+        # print('Now chdir:', os.getcwd())
         files = [os.path.join(self.path, f) for f in os.listdir(self.path) if f.endswith('.h264') and os.path.isfile(os.path.join(self.path, f))]
         os.chdir(current)
         sorted_list = sorted(files, key=os.path.getmtime)
@@ -46,7 +46,7 @@ class VideoStorage:
         if os.path.exists(base + '.mp4'):
             os.remove(base + '.mp4')
 
-        print ("  Deleted", filename)
+        print("  Deleted", filename)
 
 
 video_storage = VideoStorage(video_storage_path)

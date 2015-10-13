@@ -19,4 +19,4 @@ video:
     length: 180
     encoder: h264
     format: mp4
-    filename_pattern: YmdTHis
+    filename_pattern: "%Y-%m-%dT%H%M%S"
