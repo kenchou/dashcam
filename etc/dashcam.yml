@@ -1,17 +1,10 @@
 camera:
-  enabled:
-      - Front Camera
-  device:
-      -
-          name: Front Camera
-          driver: PiCamera
-          params:
-              resolution: 1920x1080
-              framerate: 30
-              rotation: -90
-      -
-          name: Rear Camera
-          driver: PiCamera
+    name: Front Camera
+    driver: PiCamera
+    params:
+        resolution: 1920x1080
+        framerate: 30
+        rotation: -90
 storage:
     path: ~/Videos
     max_disk_usage: .85

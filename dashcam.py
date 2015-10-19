@@ -1,48 +1,48 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
+# coding=utf-8
 """DashCam that using PiCamera"""
 
 import os.path
 import picamera
 import dashcamera
 
-__author__ = 'Ken Chou'
-__email__ = 'kenchou77@gmail.com'
-
 
 if __name__ == "__main__":
-    storage_path = '/home/pi/Videos'
-    interval = 3 * 60   # how many minutes every file
-    resolution = (1920, 1080)    # Full HD
-    # resolution = (1296, 972)
+    config = dashcamera.get_config()
+    storage_path = config['storage']['path']
+    interval = config['video']['length']
+    filename_pattern = config['video']['filename_pattern']
+    encoder = config['video']['encoder']
+
     keep_going = True
 
+    params = ['resolution', 'framerate', 'rotation', 'hflip', 'vflip']
     with picamera.PiCamera() as camera:
         try:
-            camera.resolution = resolution
-            camera.framerate = 30
-            camera.rotation = -90
-            # camera.hflip = True
-            # camera.vflip = True
-            filename = dashcamera.get_output_filename()
+            for key in config['camera']['params']:
+                if key in params:
+                    value = config['camera']['params'][key]
+                    if key == 'resolution':
+                        v = tuple([int(x) for x in value.lower().split('x')])
+                    setattr(camera, key, value)
+
+            filename = dashcamera.get_output_filename(pattern=filename_pattern)
             output_file = os.path.join(storage_path, filename)
 
             print('Start recording', filename)
             camera.start_preview()
-            camera.start_recording(output_file, format='h264')
-            # camera.annotate_text = get_annotate()
-            # camera.wait_recording(interval)
+            camera.start_recording(output_file, format=encoder)
             dashcamera.update_annotate(camera, interval)
 
             # main loop
             while keep_going:
-                filename = dashcamera.get_output_filename()
+                filename = dashcamera.get_output_filename(pattern=filename_pattern)
                 output_file = os.path.join(storage_path, filename)
 
                 print('Start recording', filename)
                 camera.split_recording(output_file)
                 dashcamera.update_annotate(camera, interval)
-                # camera.annotate_text = get_annotate()
-                # camera.wait_recording(interval)
+
         except Exception as e:
             print(e)
         finally:
