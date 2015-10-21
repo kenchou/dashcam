@@ -7,7 +7,7 @@ from datetime import datetime
 
 def get_config():
     import yaml
-    config_file = os.path.join(os.path.dirname(__file__), 'etc/dashcam.yml')
+    config_file = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, 'etc/dashcam.yml'))
     with open(config_file, 'r') as stream:
         config = yaml.load(stream)
         # print(config)
