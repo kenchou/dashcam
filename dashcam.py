@@ -23,7 +23,7 @@ if __name__ == "__main__":
                 if key in params:
                     value = config['camera']['params'][key]
                     if key == 'resolution':
-                        v = tuple([int(x) for x in value.lower().split('x')])
+                        value = tuple([int(x) for x in value.lower().split('x')])
                     setattr(camera, key, value)
 
             filename = dashcamera.get_output_filename(pattern=filename_pattern)
