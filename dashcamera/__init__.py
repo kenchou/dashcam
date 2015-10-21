@@ -5,9 +5,16 @@ import os
 from datetime import datetime
 
 
-def get_config():
+def get_config(config_path=['/etc']):
     import yaml
-    config_file = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, 'etc/dashcam.yml'))
+    config_exists = False
+    for search_path in config_path:
+        config_file = os.path.abspath(os.path.join(search_path, 'dashcam.yml'))
+        if os.path.isfile(config_file):
+            config_exists = True
+            break
+    if not config_exists:
+        raise IOError('Config does not exists in %s' % ','.join(config_path))
     with open(config_file, 'r') as stream:
         config = yaml.load(stream)
         config['storage']['path'] = os.path.expanduser(config['storage']['path'])

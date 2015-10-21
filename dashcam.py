@@ -8,14 +8,19 @@ import dashcamera
 
 
 if __name__ == "__main__":
-    config = dashcamera.get_config()
+    config_path = [os.path.abspath(os.path.join(os.path.dirname(__file__), 'etc'))]
+    config = dashcamera.get_config(config_path=config_path)
     storage_path = config['storage']['path']
     interval = config['video']['length']
     filename_pattern = config['video']['filename_pattern']
     encoder = config['video']['encoder']
 
-    keep_going = True
+    print 'Dash Camera'
+    print '==========='
+    print '* Storage Path:', storage_path
+    print '* Interval    :', interval
 
+    keep_going = True
     params = ['resolution', 'framerate', 'rotation', 'hflip', 'vflip']
     with picamera.PiCamera() as camera:
         try:

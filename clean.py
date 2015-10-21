@@ -3,15 +3,22 @@
 """ clean video storage path
 """
 from time import sleep
+import os.path
 from dashcamera import get_config
 from dashcamera import VideoStorage
 
 
 if __name__ == "__main__":
-    config = get_config()
+    config_path = [os.path.abspath(os.path.join(os.path.dirname(__file__), 'etc'))]
+    config = get_config(config_path=config_path)
     storage_config = config['storage']
     storage_path = storage_config['path']
     video_storage = VideoStorage(storage_path)
+
+    print 'Dash Camera Storage Cleaner'
+    print '==========================='
+    print '* Storage Path:', storage_path
+    print '*   Threshold:', storage_config['max_disk_usage']
 
     while True:
         for count in range(5):
