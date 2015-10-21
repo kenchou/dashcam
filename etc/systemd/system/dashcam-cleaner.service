@@ -1,0 +1,8 @@
+[Unit]
+Description=Disk Cleaner for Dash Camera
+
+[Service]
+ExecStart=/home/pi/dashcam/clean.py
+
+[Install]
+WantedBy=multi-user.target
