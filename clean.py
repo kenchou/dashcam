@@ -18,7 +18,7 @@ if __name__ == "__main__":
     print 'Dash Camera Storage Cleaner'
     print '==========================='
     print '* Storage Path:', storage_path
-    print '*   Threshold:', storage_config['max_disk_usage']
+    print '* Threshold   :', storage_config['max_disk_usage']
 
     while True:
         for count in range(5):
