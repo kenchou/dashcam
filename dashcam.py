@@ -29,7 +29,7 @@ if __name__ == "__main__":
             filename = dashcamera.get_output_filename(pattern=filename_pattern)
             output_file = os.path.join(storage_path, filename)
 
-            print('Start recording', filename)
+            print 'Start recording', filename
             camera.start_preview()
             camera.start_recording(output_file, format=encoder)
             dashcamera.update_annotate(camera, interval)
@@ -39,14 +39,14 @@ if __name__ == "__main__":
                 filename = dashcamera.get_output_filename(pattern=filename_pattern)
                 output_file = os.path.join(storage_path, filename)
 
-                print('Start recording', filename)
+                print 'Start recording', filename
                 camera.split_recording(output_file)
                 dashcamera.update_annotate(camera, interval)
 
         except Exception as e:
-            print(e)
+            print e
         finally:
-            print('Stop.')
+            print 'Stop.'
             camera.stop_preview()
             camera.stop_recording()
             camera.close()

@@ -10,7 +10,6 @@ def get_config():
     config_file = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, 'etc/dashcam.yml'))
     with open(config_file, 'r') as stream:
         config = yaml.load(stream)
-        # print(config)
         config['storage']['path'] = os.path.expanduser(config['storage']['path'])
     return config
 
