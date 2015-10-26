@@ -3,10 +3,9 @@ Dashcam
 
 Install
 -------
-### Install Services
+### Install Dashcam Services
 ~~~bash
-mkdir -p ~/.config/systemd/user
-cp ~/dashcam/etc/systemd/user/*.service ~/.config/systemd/user
-systemctl --user enable dashcam-cleaner.service
-systemctl --user enable dashcam.service
+sudo cp ~/dashcam/etc/systemd/user/*.service /etc/systemd/system/
+sudo systemctl enable dashcam-cleaner.service
+sudo systemctl enable dashcam.service
 ~~~

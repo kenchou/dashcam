@@ -3,7 +3,9 @@ Description=Dash Camera
 Wants=dashcam-cleaner.service
 
 [Service]
+User=pi
 ExecStart=/home/pi/dashcam/dashcam.py
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
