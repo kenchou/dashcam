@@ -21,6 +21,16 @@ def get_config(config_path=['/etc']):
     return config
 
 
+def set_config(camera, config):
+    params = ['resolution', 'framerate', 'rotation', 'hflip', 'vflip']
+    for key in config['camera']['params']:
+        if key in params:
+            value = config['camera']['params'][key]
+            if key == 'resolution':
+                value = tuple([int(x) for x in value.lower().split('x')])
+            setattr(camera, key, value)
+
+
 def get_output_filename(pattern='%Y-%m-%dT%H_%M_%S', ext_name='h264'):
     return datetime.now().strftime('%s.%s' % (pattern, ext_name))
 
@@ -31,7 +41,7 @@ def get_annotate(camera):
                              camera.framerate)
 
 
-def update_annotate(camera, interval):
+def update_annotate(camera, interval=180):
     for i in range(0, interval):
         camera.annotate_text = get_annotate(camera)
         camera.wait_recording(1)

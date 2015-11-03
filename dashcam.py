@@ -24,12 +24,7 @@ if __name__ == "__main__":
     params = ['resolution', 'framerate', 'rotation', 'hflip', 'vflip']
     with picamera.PiCamera() as camera:
         try:
-            for key in config['camera']['params']:
-                if key in params:
-                    value = config['camera']['params'][key]
-                    if key == 'resolution':
-                        value = tuple([int(x) for x in value.lower().split('x')])
-                    setattr(camera, key, value)
+            dashcamera.set_config(camera, config)
 
             filename = dashcamera.get_output_filename(pattern=filename_pattern)
             output_file = os.path.join(storage_path, filename)
