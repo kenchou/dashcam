@@ -2,11 +2,11 @@
 
 from __future__ import division
 import os
+import yaml
 from datetime import datetime
 
 
 def get_config(config_path=['/etc']):
-    import yaml
     config_exists = False
     for search_path in config_path:
         config_file = os.path.abspath(os.path.join(search_path, 'dashcam.yml'))
