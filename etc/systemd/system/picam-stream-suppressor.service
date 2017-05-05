@@ -4,6 +4,3 @@ Description=Pi Camera Stream Suppressor
 [Service]
 Type=simple
 ExecStart=/home/pi/dashcam/picam-stream-suppressor.sh
-
-[Install]
-WantedBy=multi-user.target

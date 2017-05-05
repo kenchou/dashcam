@@ -6,3 +6,6 @@ Description=Run PiCam Stream Suppressor every 10 minutes
 OnBootSec=1min
 # Time between running each consecutive time
 OnUnitActiveSec=10min
+
+[Install]
+WantedBy=multi-user.target
