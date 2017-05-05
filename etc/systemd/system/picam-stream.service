@@ -1,0 +1,11 @@
+[Unit]
+Description=Pi Camera Video Stream
+
+[Service]
+Type=simple
+User=pi
+ExecStart=/home/pi/bin/picam-stream.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
