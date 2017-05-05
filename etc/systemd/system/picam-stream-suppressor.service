@@ -3,7 +3,7 @@ Description=Pi Camera Stream Suppressor
 
 [Service]
 Type=simple
-ExecStart=arp-scan -l | grep 38:a4:ed:be:70:7c && systemctl stop picam-stream || systemctl start picam-stream
+ExecStart=/home/pi/dashcam/picam-stream-suppressor.sh
 
 [Install]
 WantedBy=multi-user.target
